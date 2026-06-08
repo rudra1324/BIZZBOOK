@@ -60,28 +60,106 @@ function ProductModal({
   if (!isOpen) return null;
 
   const handleSave = () => {
-    if (!formData.name.trim()) {
-      setError(
-        "Product name is required"
-      );
-      return;
-    }
+const productName =
+formData.name.trim();
 
-    if (!formData.price) {
-      setError(
-        "Selling price is required"
-      );
-      return;
-    }
+const hsn =
+formData.hsn.trim();
 
-    setError("");
+const gst =
+Number(formData.gst);
 
-    onSave(formData);
+const price =
+Number(formData.price);
 
-    resetForm();
+const stock =
+Number(formData.stock);
 
-    onClose();
-  };
+// Product Name Validation
+
+if (!productName) {
+setError(
+"Product name is required"
+);
+return;
+}
+
+if (
+!/^[a-zA-Z0-9\s-&()]+$/.test(
+productName
+)
+) {
+setError(
+"Product name contains invalid characters"
+);
+return;
+}
+
+// HSN Validation
+
+if (
+hsn &&
+!/^[A-Z0-9]{4,8}$/i.test(
+hsn
+)
+) {
+setError(
+"HSN/SAC code must be 4-8 alphanumeric characters"
+);
+return;
+}
+
+// GST Validation
+
+if (
+isNaN(gst) ||
+gst < 0 ||
+gst > 100
+) {
+setError(
+"GST must be between 0 and 100"
+);
+return;
+}
+
+// Price Validation
+
+if (
+isNaN(price) ||
+price <= 0
+) {
+setError(
+"Selling price must be greater than 0"
+);
+return;
+}
+
+// Stock Validation
+
+if (
+isNaN(stock) ||
+stock < 0
+) {
+setError(
+"Stock quantity cannot be negative"
+);
+return;
+}
+
+setError("");
+
+onSave({
+...formData,
+gst,
+price,
+stock,
+});
+
+resetForm();
+
+onClose();
+};
+
 
   const handleClose = () => {
     resetForm();
