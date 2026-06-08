@@ -8,7 +8,6 @@ name,
 value,
 } = e.target;
 
-```
 // Product Name
 if (name === "name") {
   value = value.replace(
@@ -252,7 +251,6 @@ return ( <div className="space-y-8">
   </div>
 
 </div>
-```
 
 );
 }
