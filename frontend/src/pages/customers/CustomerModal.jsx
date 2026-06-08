@@ -69,28 +69,82 @@ function CustomerModal({
   if (!isOpen) return null;
 
   const handleSave = () => {
-    if (!formData.name.trim()) {
-      setError(
-        "Customer name is required"
-      );
-      return;
-    }
 
-    if (!formData.phone.trim()) {
-      setError(
-        "Phone number is required"
-      );
-      return;
-    }
+  const nameRegex =
+    /^[A-Za-z\s]+$/;
 
-    setError("");
+  const phoneRegex =
+    /^[0-9]{10}$/;
 
-    onSave(formData);
+  const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    resetForm();
+  if (!formData.name.trim()) {
+    setError(
+      "Customer name is required"
+    );
+    return;
+  }
 
-    onClose();
-  };
+  if (
+    !nameRegex.test(
+      formData.name.trim()
+    )
+  ) {
+    setError(
+      "Customer name can contain only letters and spaces"
+    );
+    return;
+  }
+
+  if (!formData.phone.trim()) {
+    setError(
+      "Phone number is required"
+    );
+    return;
+  }
+
+  if (
+    !phoneRegex.test(
+      formData.phone
+    )
+  ) {
+    setError(
+      "Phone number must be exactly 10 digits"
+    );
+    return;
+  }
+
+  if (
+    formData.email &&
+    !emailRegex.test(
+      formData.email
+    )
+  ) {
+    setError(
+      "Please enter a valid email address"
+    );
+    return;
+  }
+
+  if (
+    formData.gstin &&
+    formData.gstin.length !== 15
+  ) {
+    setError(
+      "GSTIN must be 15 characters long"
+    );
+    return;
+  }
+
+  setError("");
+
+  onSave(formData);
+
+  resetForm();
+
+  onClose();
+};
 
   const handleClose = () => {
     resetForm();
