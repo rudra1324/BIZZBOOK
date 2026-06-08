@@ -8,15 +8,16 @@ name,
 value,
 } = e.target;
 
+```
 // Product Name
 if (name === "name") {
   value = value.replace(
-    /[^a-zA-Z0-9\s\-&()]/g,
+    /[^a-zA-Z0-9\s\-&().]/g,
     ""
   );
 }
 
-// HSN Code
+// HSN / SAC Code
 if (name === "hsn") {
   value = value
     .toUpperCase()
@@ -34,21 +35,32 @@ if (name === "gst") {
     ""
   );
 
-  if (Number(value) > 100) {
+  value =
+    value === ""
+      ? ""
+      : Number(value);
+
+  if (value > 100) {
     value = 100;
   }
 }
 
 // Price
 if (name === "price") {
-  if (Number(value) < 0) {
+  if (
+    value !== "" &&
+    Number(value) < 0
+  ) {
     value = 0;
   }
 }
 
 // Stock
 if (name === "stock") {
-  if (Number(value) < 0) {
+  if (
+    value !== "" &&
+    Number(value) < 0
+  ) {
     value = 0;
   }
 }
@@ -251,6 +263,7 @@ return ( <div className="space-y-8">
   </div>
 
 </div>
+```
 
 );
 }
