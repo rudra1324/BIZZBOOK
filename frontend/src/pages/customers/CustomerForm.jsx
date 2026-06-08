@@ -3,10 +3,44 @@ function CustomerForm({
   setFormData,
 }) {
   const handleChange = (e) => {
+    let {
+      name,
+      value,
+    } = e.target;
+
+    // Customer Name
+    if (name === "name") {
+      value = value.replace(
+        /[^a-zA-Z\s]/g,
+        ""
+      );
+    }
+
+    // Phone Number
+    if (name === "phone") {
+      value = value
+        .replace(/\D/g, "")
+        .slice(0, 10);
+    }
+
+    // GSTIN
+    if (name === "gstin") {
+      value = value
+        .toUpperCase()
+        .slice(0, 15);
+    }
+
+    // State
+    if (name === "state") {
+      value = value.replace(
+        /[^a-zA-Z\s]/g,
+        ""
+      );
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [name]: value,
     });
   };
 
@@ -96,8 +130,13 @@ function CustomerForm({
               value={formData.phone}
               onChange={handleChange}
               placeholder="9876543210"
+              maxLength={10}
               className={inputStyle}
             />
+
+            <p className="text-xs text-slate-400 mt-1">
+              10 digit mobile number
+            </p>
 
           </div>
 
@@ -113,8 +152,13 @@ function CustomerForm({
               value={formData.email}
               onChange={handleChange}
               placeholder="customer@email.com"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               className={inputStyle}
             />
+
+            <p className="text-xs text-slate-400 mt-1">
+              Enter a valid email address
+            </p>
 
           </div>
 
@@ -146,6 +190,7 @@ function CustomerForm({
               }
               onChange={handleChange}
               placeholder="22AAAAA0000A1Z5"
+              maxLength={15}
               className={inputStyle}
             />
 
